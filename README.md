@@ -2,7 +2,7 @@
 
 A containerized Flask app deployed on Google Cloud Run. Hits the PokéAPI and serves up a random Gen 1 Pokémon with a small frontend — sprite, types, height, weight. Refresh for a new one.
 
-Live: [your-cloud-run-url-here]
+Live: [PokeContainer](https://poke-container-572460024219.us-east1.run.app/)
 
 ---
 
@@ -45,7 +45,7 @@ docker build -t gcr.io/firstcontainerlaunch/poke-container .
 docker push gcr.io/firstcontainerlaunch/poke-container
 
 gcloud run deploy poke-container \
-  --image gcr.io/YOUR_PROJECT_ID/poke-container \
+  --image gcr.io/firstcontainerlaunch/poke-container \
   --platform managed \
   --region us-east1 \
   --allow-unauthenticated \
