@@ -1,27 +1,67 @@
-# 🚀 Sandbox for Containers, CI/CD Pipelines, and Kubernetes
+# poke-container
 
-## Overview
-This repository serves as a **sandbox environment** for experimenting with:
-- 🐳 **Containers** (Docker, Podman)  
-- 🔄 **CI/CD Pipelines** (GitHub Actions, Jenkins, GitLab CI)  
-- ☸️ **Kubernetes** (Minikube, K3s, Helm)  
+A containerized Flask app deployed on Google Cloud Run. Hits the PokéAPI and serves up a random Gen 1 Pokémon with a small frontend — sprite, types, height, weight. Refresh for a new one.
 
-The goal is to build a **hands-on learning space** where I can test, break, and refine my understanding of these DevOps technologies.
+Live: [your-cloud-run-url-here]
 
 ---
 
-## 📌 What This Repo Covers
-✅ **Containerization:**  
-- Building Docker images  
-- Writing efficient `Dockerfile`s  
-- Managing images with `docker-compose`  
+## What this is
 
-✅ **CI/CD Pipelines:**  
-- Automating builds with GitHub Actions/Jenkins  
-- Running tests and deployments in a pipeline  
-- Using webhooks for continuous deployment  
+This started as a way to get comfortable with the full container workflow — writing a Dockerfile, building an image, pushing to Google Container Registry, and deploying to Cloud Run. I wanted something that actually made an external API call and served real content rather than just a hello world.
 
-✅ **Kubernetes Basics:**  
-- Deploying applications with `kubectl`  
-- Writing `Deployment` and `Service` YAMLs  
-- Managing clusters locally with Minikube  
+Ended up adding a little frontend to make it worth looking at. Nothing crazy, just enough to make it feel like an actual app.
+
+---
+
+## Stack
+
+- Python / Flask
+- Docker
+- Google Cloud Run
+- Google Container Registry
+- GitHub Actions (CI — lint + tests on push)
+- PokéAPI
+
+---
+
+## Run it locally
+
+```bash
+git clone https://github.com/jiovinejr/poke-container.git
+cd poke-container
+docker build -t poke-container .
+docker run -p 8080:8080 poke-container
+```
+
+Then open `http://localhost:8080`.
+
+---
+
+## Deploy
+
+```bash
+docker build -t gcr.io/firstcontainerlaunch/poke-container .
+docker push gcr.io/firstcontainerlaunch/poke-container
+
+gcloud run deploy poke-container \
+  --image gcr.io/YOUR_PROJECT_ID/poke-container \
+  --platform managed \
+  --region us-east1 \
+  --allow-unauthenticated \
+  --port 8080
+```
+
+---
+
+## Background
+
+I spent about 10 years in restaurants — bartending, cooking, managing. Left the industry 3 years ago to move into tech. I'm currently working in produce wholesale, managing warehouse operations while building internal tools to modernize how the place runs. Most of what I build day to day is practical stuff the job actually needs.
+
+This project is separate from that — it's here to show I can work with containers and cloud infrastructure, not just scripts and web apps.
+
+---
+
+## CI
+
+GitHub Actions runs on every push to `main` and `develop`. Installs dependencies, lints with flake8, runs pytest. Nothing gets merged without passing.
